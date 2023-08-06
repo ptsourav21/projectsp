@@ -1,0 +1,10 @@
+.bodycontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.bodycontainer .btn{
+    width: 200px;
+    margin: 30px;
+}
