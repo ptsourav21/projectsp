@@ -9,7 +9,7 @@ if ($resultGetFirstRow) {
     $firstRow = mysqli_fetch_assoc($resultGetFirstRow);
     $formName = $firstRow['formName'];
 
-    $sqlCreateTable = "CREATE TABLE IF NOT EXISTS $formName (id INT AUTO_INCREMENT PRIMARY KEY)";
+    $sqlCreateTable = "CREATE TABLE IF NOT EXISTS `$formName` (id INT AUTO_INCREMENT PRIMARY KEY)";
     if (mysqli_query($conn, $sqlCreateTable)) {
         echo "Table $formName created successfully!<br>";
 
@@ -21,10 +21,14 @@ if ($resultGetFirstRow) {
                 $keyName = $row["keyName"];
                 $valueType = $row["valueType"];
 
-                
-
                 if (!empty($keyName) && !empty($valueType)) {
-                    $sqlAlterTable = "ALTER TABLE $formName ADD $keyName '$valueType'";
+                    if ($valueType == 'VARCHAR(255)') {
+                        $sqlAlterTable = "ALTER TABLE `$formName` ADD `$keyName` VARCHAR(255)";
+                    } elseif ($valueType == 'INT') {
+                        $sqlAlterTable = "ALTER TABLE `$formName` ADD `$keyName` INT";
+                    } else {
+                        echo "Unsupported data type: $valueType";
+                    }
                     if (mysqli_query($conn, $sqlAlterTable)) {
                         echo "Column $keyName added to table $formName with type $valueType<br>";
                     } else {
@@ -43,5 +47,23 @@ if ($resultGetFirstRow) {
 } else {
     echo "Error getting formName: " . mysqli_error($conn) . "<br>";
 }
+
+$sqlDeleteValues = "DELETE FROM field_value";
+if (mysqli_query($conn, $sqlDeleteValues)) {
+    echo "All values deleted from field_value table<br>";
+} else {
+    echo "Error deleting values: " . mysqli_error($conn) . "<br>";
+}
+
+// Insert $formName into table_names
+$sqlInsertTableName = "INSERT INTO table_names (table_name) VALUES ('$formName')";
+if (mysqli_query($conn, $sqlInsertTableName)) {
+    echo "Form name '$formName' inserted into table_names<br>";
+} else {
+    echo "Error inserting form name: " . mysqli_error($conn) . "<br>";
+}
+
+header("Location: openallforms.php");
+exit; // Make sure to exit after the redirect
 
 ?>

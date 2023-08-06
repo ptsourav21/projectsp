@@ -12,7 +12,7 @@
 
     <div class="container bodycontainer">
         <a class="btn btn-primar" href="cretenewform.php"><button type="button" class="btn btn-primary">Create New Form</button></a>
-        <a class="btn btn-primar" href="openexistingform.php"><button type="button" class="btn btn-primary">Open Existing Forms</button></a>
+        <a class="btn btn-primar" href="openallforms.php"><button type="button" class="btn btn-primary">Open Existing Forms</button></a>
     </div>
     
     
