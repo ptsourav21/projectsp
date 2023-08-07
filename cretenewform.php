@@ -4,15 +4,27 @@ include 'conn.php';
 $tableNotEmpty = false;
 $allData = [];
 
-$sqlCheckTable = "SELECT COUNT(*) AS count FROM field_value";
-$resultCheckTable = mysqli_query($conn, $sqlCheckTable);
 
-if ($resultCheckTable && ($row = mysqli_fetch_assoc($resultCheckTable))) {
-    $tableNotEmpty = ($row['count'] > 0);
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
     $formName = ($_POST["formName"] ?? '');
+
+    if (empty($formName)) {
+        $query = "SELECT formName FROM field_value LIMIT 1";
+        $result = mysqli_query($conn, $query);
+
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            
+            // Get the formName value from the first row
+            $formName = $row['formName'];
+            
+            // Use $formNameModified for further processing if needed
+        } else {
+            echo "Query failed: " . mysqli_error($conn);
+        }
+    }
+
     $keyName = $_POST["keyName"];
     $valueType = $_POST["keyValue"];
 
@@ -23,6 +35,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         echo "";
     } else {
         echo "Error: " . mysqli_error($conn);
+    }
+
+    $sqlCheckTable = "SELECT COUNT(*) AS count FROM field_value";
+    $resultCheckTable = mysqli_query($conn, $sqlCheckTable);
+
+    if ($resultCheckTable && ($row = mysqli_fetch_assoc($resultCheckTable))) {
+        $tableNotEmpty = ($row['count'] > 0);
     }
 }
 

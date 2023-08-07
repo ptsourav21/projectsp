@@ -8,6 +8,8 @@ $resultGetFirstRow = mysqli_query($conn, $sqlGetFirstRow);
 if ($resultGetFirstRow) {
     $firstRow = mysqli_fetch_assoc($resultGetFirstRow);
     $formName = $firstRow['formName'];
+    $formName = strtolower($formName);
+    $formName = str_replace(' ', '_', $formName);
 
     $sqlCreateTable = "CREATE TABLE IF NOT EXISTS `$formName` (id INT AUTO_INCREMENT PRIMARY KEY)";
     if (mysqli_query($conn, $sqlCreateTable)) {
