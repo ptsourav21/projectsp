@@ -40,8 +40,7 @@
     include 'conn.php';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $columnNames = array();  // To store column names for generating labels and inserting data
-        // Fetch column names from the specified form
+        $columnNames = array();
         $formName = strtolower($_POST["formName"]);
         ?>
         <h1 style="color: white;">Enter Data for <?php echo $formName; ?></h1>
@@ -50,10 +49,9 @@
         $resultShowColumns = mysqli_query($conn, $sqlShowColumns);
 
         if ($resultShowColumns && mysqli_num_rows($resultShowColumns) > 0) {
-            // Generate and process the form
             echo "<form method='POST'>";
             while ($row = mysqli_fetch_assoc($resultShowColumns)) {
-                if ($row['Field'] !== 'id') {  // Exclude the 'id' column
+                if ($row['Field'] !== 'id') {
                     $columnName = $row['Field'];
                     echo "<div class='mb-3'>";
                     echo "<label for='$columnName' class='form-label'>$columnName</label>";
@@ -66,10 +64,9 @@
             echo "<button type='submit' class='btn btn-primary'>Submit</button>";
             echo "</form>";
 
-            // Insert data into the specified form's table
             if (!empty($_POST)) {
                 $values = array_map(array($conn, 'real_escape_string'), $_POST);
-                array_pop($values);  // Remove the hidden 'formName' field
+                array_pop($values);
                 $insertColumns = implode(', ', $columnNames);
                 $insertValues = "'" . implode("', '", $values) . "'";
                 $sqlInsertData = "INSERT INTO $formName ($insertColumns) VALUES ($insertValues)";

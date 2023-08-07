@@ -4,8 +4,6 @@ include 'conn.php';
 $tableNotEmpty = false;
 $allData = [];
 
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
     $formName = ($_POST["formName"] ?? '');
 
@@ -15,11 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 
         if ($result) {
             $row = mysqli_fetch_assoc($result);
-            
-            // Get the formName value from the first row
             $formName = $row['formName'];
-            
-            // Use $formNameModified for further processing if needed
         } else {
             echo "Query failed: " . mysqli_error($conn);
         }

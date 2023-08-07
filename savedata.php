@@ -57,7 +57,6 @@ if (mysqli_query($conn, $sqlDeleteValues)) {
     echo "Error deleting values: " . mysqli_error($conn) . "<br>";
 }
 
-// Insert $formName into table_names
 $sqlInsertTableName = "INSERT INTO table_names (table_name) VALUES ('$formName')";
 if (mysqli_query($conn, $sqlInsertTableName)) {
     echo "Form name '$formName' inserted into table_names<br>";
@@ -66,6 +65,6 @@ if (mysqli_query($conn, $sqlInsertTableName)) {
 }
 
 header("Location: openallforms.php");
-exit; // Make sure to exit after the redirect
+exit; 
 
 ?>

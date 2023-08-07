@@ -46,21 +46,18 @@
         $resultSelectFormData = mysqli_query($conn, $sqlSelectFormData);
 
         if ($resultSelectFormData && mysqli_num_rows($resultSelectFormData) > 0) {
-            // Fetch column names from the first row
+
             $firstRow = mysqli_fetch_assoc($resultSelectFormData);
             $columnNames = array_keys($firstRow);
 
             echo "<table class='table'>";
             echo "<thead><tr>";
 
-            // Output column names in the table header
             foreach ($columnNames as $columnName) {
                 echo "<th scope='col'>$columnName</th>";
             }
 
             echo "</tr></thead><tbody>";
-
-            // Reset pointer after fetching column names
             mysqli_data_seek($resultSelectFormData, 0);
 
             while ($row = mysqli_fetch_assoc($resultSelectFormData)) {
